@@ -1,12 +1,26 @@
 let capture;
+let bodyPose;
+let poses = [];
 
 function setup() {
   // 建立全螢幕畫布
   createCanvas(windowWidth, windowHeight);
   // 擷取攝影機影像
   capture = createCapture(VIDEO);
+  capture.size(640, 480);
   // 隱藏原始 HTML 影片元件，只顯示在畫布上
   capture.hide();
+
+  // 初始化 BodyPose 影像辨識 (使用 ml5 v1.0 新 API)
+  bodyPose = ml5.bodyPose(capture, modelReady);
+  // 當偵測到人體姿勢時，將結果存入 poses 陣列
+  bodyPose.on('pose', (results) => {
+    poses = results;
+  });
+}
+
+function modelReady() {
+  console.log('影像辨識模型已就緒');
 }
 
 function draw() {
@@ -29,7 +43,7 @@ function draw() {
   image(capture, x, y, w, h);
 
   // 如果有偵測到人體
-  if (poses.length > 0) {
+  if (poses && poses.length > 0) {
     let pose = poses[0]; // 新版 ml5 直接回傳特徵點，不再嵌套在 .pose 屬性下
     // 繪製左右耳垂的耳環
     drawEarring(pose.left_ear, x, y, w, h);  // 新版屬性名為下底線 left_ear
