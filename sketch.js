@@ -35,6 +35,13 @@ function draw() {
   let x = (width - w) / 2;
   let y = (height - h) / 2;
 
+  // 在影像上方的空間顯示文字
+  fill(0); // 設定文字顏色為黑色
+  textSize(24); // 設定字體大小
+  textAlign(CENTER, CENTER); // 設定文字水平與垂直皆置中
+  // 繪製文字，位置在畫布水平中央 (width / 2)，垂直位置在影像上方的空白處中央 (y / 2)
+  text('教科414730217', width / 2, y / 2);
+
   // 確保攝影機已經有畫面資訊才開始繪製，避免除以 0 的錯誤
   if (!capture || capture.width === 0) return;
 
